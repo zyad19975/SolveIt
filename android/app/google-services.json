@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "804716141619",
+    "firebase_url": "https://solveit-tripple-com.firebaseio.com",
+    "project_id": "solveit-tripple-com",
+    "storage_bucket": "solveit-tripple-com.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:804716141619:android:2081265aad9a89463ed746",
+        "android_client_info": {
+          "package_name": "com.example.solveit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "804716141619-0ob6lm7teb5plrkrt4aleov79g277blo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJDhRplqXpTltYvln3mbNFKYiwwy-ICAE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "804716141619-0ob6lm7teb5plrkrt4aleov79g277blo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
