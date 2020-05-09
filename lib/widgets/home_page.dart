@@ -1,9 +1,10 @@
-import 'package:solveit/widgets/eguation_category_selected.dart';
-import 'package:solveit/widgets/popular_course_list_view.dart';
-import 'package:solveit/main.dart';
+import 'dart:io';
+import 'package:solveit/widgets/EquationListView.dart';
 import 'package:flutter/material.dart';
-
-import 'design_course_app_theme.dart';
+//import 'package:firebase_ml_vision/firebase_ml_vision.dart';
+//import 'package:image_picker/image_picker.dart';
+//import 'package:solveit/widgets/solve.dart';
+import 'design_app_theme.dart';
 
 class DesignCourseHomeScreen extends StatefulWidget {
   @override
@@ -13,6 +14,49 @@ class DesignCourseHomeScreen extends StatefulWidget {
 class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
   CategoryType categoryType = CategoryType.ui;
 
+/*
+    File pickedimage;
+
+  Future picCamera() async {
+    var temp = await ImagePicker.pickImage(source: ImageSource.camera);
+    FirebaseVisionImage camImage = FirebaseVisionImage.fromFile(temp);
+    TextRecognizer recognizeText = FirebaseVision.instance.textRecognizer();
+    VisionText readText = await recognizeText.processImage(camImage);
+    print(readText.text);
+  }
+
+  Future picgallery() async {
+    String equation = "x+5 = 12";
+    TextEditingController controller;
+    controller = TextEditingController(text: equation);
+
+    showDialog(
+        context: context,
+        child: new AlertDialog(
+          title: Text("Check your equation"),
+          content: TextField(
+            controller: controller,
+          ),
+          actions: <Widget>[
+            new FlatButton(
+              color: DesignCourseAppTheme.nearlyBlue,
+              child: new Text(
+                'Ok',
+                style: TextStyle(
+                  color: DesignCourseAppTheme.darkerText,
+                ),
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Solve(equation:controller.text)),
+                );
+              },
+            )
+          ],
+        ));
+  }
+*/
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -31,7 +75,7 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
                   height: MediaQuery.of(context).size.height,
                   child: Column(
                     children: <Widget>[
-                      getUnknowntype(),
+                      //getUnknowntype(),
                       Flexible(
                         child: getEquationsTypes(),
                       ),
@@ -45,7 +89,7 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
       ),
     );
   }
-
+/*
   Widget getUnknowntype() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -86,10 +130,11 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
                       border: Border.all(
                           color: DesignCourseAppTheme.grey.withOpacity(0.2)),
                     ),
-                    child: Icon(
-                      Icons.photo_library,
+                    child: IconButton(
+                      icon: Icon(Icons.photo_library),
                       color: DesignCourseAppTheme.nearlyWhite,
-                      size: 24,
+                      iconSize: 24,
+                      onPressed: picgallery,
                     ),
                   ),
                 ),
@@ -111,10 +156,11 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
                     ],
                   ),
                   child: Center(
-                    child: Icon(
-                      Icons.photo_camera,
+                    child: IconButton(
+                      icon: Icon(Icons.photo_camera),
                       color: DesignCourseAppTheme.nearlyWhite,
-                      size: 24,
+                      iconSize: 24,
+                      onPressed: picCamera,
                     ),
                   ),
                 ),
@@ -125,7 +171,7 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
         Padding(
           padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
           child: Text(
-            'If you dont know what is the type of your equation dont worry You can choose between two options first from gallery, second capture an image by camera',
+            'If you dont know what is the type of your equation dont worry You can choose between two options first from gallery, second capture an image by camera and we will solve it for you',
             textAlign: TextAlign.center,
             style: TextStyle(
               fontWeight: FontWeight.w100,
@@ -138,7 +184,7 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
       ],
     );
   }
-
+*/
   Widget getEquationsTypes() {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, left: 18, right: 16),
@@ -157,22 +203,9 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
             ),
           ),
           Flexible(
-            child: PopularCourseListView(
-              callBack: () {
-                moveTo();
-              },
-            ),
+            child: EquationListView(),
           )
         ],
-      ),
-    );
-  }
-
-  void moveTo() {
-    Navigator.push<dynamic>(
-      context,
-      MaterialPageRoute<dynamic>(
-        builder: (BuildContext context) => CourseInfoScreen(),
       ),
     );
   }
