@@ -1,4 +1,4 @@
-import 'package:solveit/widgets/design_course_app_theme.dart';
+import 'package:solveit/widgets/design_app_theme.dart';
 import 'package:solveit/widgets/models/category.dart';
 import 'package:solveit/main.dart';
 import 'package:flutter/material.dart';
