@@ -10,8 +10,10 @@ import 'design_app_theme.dart';
 class Solve extends StatelessWidget {
   final Category todo;
   final String equation;
-  
-  Solve({Key key, @required this.equation, @required this.todo}) : super(key: key);
+  final String second;
+
+  Solve({Key key, @required this.equation, @required this.todo, this.second})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,66 +35,68 @@ class Solve extends StatelessWidget {
         ),
       ),
       body: Center(
-          child: Text(solving(equation,todo.type)),
-        ),
-      );
+        child: Text(solving(equation, second, todo.type)),
+      ),
+    );
   }
 }
 
-String solving(String eq, String type){
-  switch(type) { 
-   case 'Basic': { 
-      return basic(eq);
-   } 
-   break; 
-  
-   case 'Two': { 
-      return two(eq);
-   } 
-   break; 
+String solving(String eq, String eq2, String type) {
+  switch (type) {
+    case 'Basic':
+      {
+        return basic(eq);
+      }
+      break;
 
-   case 'Second': { 
-      return second(eq);
-   } 
-   break; 
+    case 'Two':
+      {
+        return two(eq, eq2);
+      }
+      break;
 
-   case 'Diff': { 
-      return diff(eq);
-   } 
-   break; 
-} 
+    case 'Second':
+      {
+        return second(eq);
+      }
+      break;
+
+    case 'Diff':
+      {
+        return diff(eq);
+      }
+      break;
+  }
 }
 
-String basic (String eq){
-  
+String basic(String eq) {
   bool valid = false;
-  String ans,left,right;
+  String ans, left, right;
   Parser p = Parser();
   Variable x = Variable('x');
 
-  for(int i=0; i<eq.length; i++) {
-  var char = eq[i];
-  if (char == '='){  
-    valid = true;
-    left = eq.substring(0, i);
-    right = eq.substring(i+1, eq.length);
-    
-    Expression expLeft = p.parse(left);
-    Expression expRight = p.parse(right);
+  for (int i = 0; i < eq.length; i++) {
+    var char = eq[i];
+    if (char == '=') {
+      valid = true;
+      left = eq.substring(0, i);
+      right = eq.substring(i + 1, eq.length);
 
-    print(expLeft.simplify());
-    print(expRight.simplify());
-    for (var i = -100; i < 100; i++) {
-      ContextModel cm = ContextModel()
-      ..bindVariable(x, Number(i));
-      double evalLeft = expLeft.evaluate(EvaluationType.REAL, cm);
-      double evalRight = expRight.evaluate(EvaluationType.REAL, cm);
-      if (evalLeft == evalRight) {
-        ans = "X = "+ i.toString();
-        break;
+      Expression expLeft = p.parse(left);
+      Expression expRight = p.parse(right);
+
+      print(expLeft.simplify());
+      print(expRight.simplify());
+      for (var i = -100; i < 100; i++) {
+        ContextModel cm = ContextModel()..bindVariable(x, Number(i));
+        double evalLeft = expLeft.evaluate(EvaluationType.REAL, cm);
+        double evalRight = expRight.evaluate(EvaluationType.REAL, cm);
+        if (evalLeft == evalRight) {
+          ans = "X = " + i.toString();
+          break;
+        }
+        ans = "Sorry we couldn't SolveIt! we will do our best next time";
       }
-      ans = "Sorry we couldn't SolveIt! we will do our best next time"; 
-    }
     }
   }
   if (valid) {
@@ -102,14 +106,108 @@ String basic (String eq){
   }
 }
 
-String two (String eq){
-  return "two equations in two unkwons";
+String two(String eq, String eq2) {
+  Parser p = Parser();
+  bool valid = false;
+  String ans, leftone, rightone;
+  String lefttwo, righttwo;
+  Variable x = Variable('x');
+  Variable y = Variable('y');
+
+  for (int i = 0; i < eq.length; i++) {
+    var char = eq[i];
+    if (char == '=') {
+      valid = true;
+      leftone = eq.substring(0, i);
+      rightone = eq.substring(i + 1, eq.length);
+    }
+  }
+    for (int i = 0; i < eq2.length; i++) {
+      var char = eq2[i];
+      if (char == '=') {
+        valid = true;
+        lefttwo = eq2.substring(0, i);
+        righttwo = eq2.substring(i + 1, eq2.length);
+      }
+    }
+
+      Expression firstexpLeft = p.parse(leftone);
+      Expression firstexpRight = p.parse(rightone);
+
+      Expression secondexpLeft = p.parse(lefttwo);
+      Expression secondexpRight = p.parse(righttwo);
+
+      for (var i = -100; i < 100; i++) {
+        for (var j = -100; j < 100; j++) {
+          ContextModel cm = ContextModel()
+            ..bindVariable(x, Number(i))
+            ..bindVariable(y, Number(j));
+
+          double evalLeft = firstexpLeft.evaluate(EvaluationType.REAL, cm);
+          double evalRight = firstexpRight.evaluate(EvaluationType.REAL, cm);
+          if (evalLeft == evalRight) {
+            double evalLeft2 = secondexpLeft.evaluate(EvaluationType.REAL, cm);
+            double evalRight2 =
+                secondexpRight.evaluate(EvaluationType.REAL, cm);
+            if (evalLeft2 == evalRight2) {
+              ans = "X = " + i.toString() + " and Y = " + j.toString();
+              break;
+            }
+          }
+        }
+      }
+  return ans;
 }
 
-String second (String eq){
-  return "second orde equation";
+String second(String eq) {
+  bool valid = false;
+  bool firstvalue = false;
+  String ans, left, right;
+  Parser p = Parser();
+  Variable x = Variable('x');
+
+  for (int i = 0; i < eq.length; i++) {
+    var char = eq[i];
+    if (char == '=') {
+      valid = true;
+      left = eq.substring(0, i);
+      right = eq.substring(i + 1, eq.length);
+
+      Expression expLeft = p.parse(left);
+      Expression expRight = p.parse(right);
+
+      print(expLeft.simplify());
+      print(expRight.simplify());
+      for (var i = -100; i < 100; i++) {
+        ContextModel cm = ContextModel()..bindVariable(x, Number(i));
+        double evalLeft = expLeft.evaluate(EvaluationType.REAL, cm);
+        double evalRight = expRight.evaluate(EvaluationType.REAL, cm);
+        if (evalLeft == evalRight) {
+          if (firstvalue) {
+            ans = ans + " or X = " + i.toString();
+            firstvalue = true;
+            break;
+          } else {
+            ans = "X = " + i.toString();
+            firstvalue = true;
+          }
+        }
+        if (!firstvalue) {
+          ans = "Sorry we couldn't SolveIt! we will do our best next time";
+        }
+      }
+    }
+  }
+  if (valid) {
+    return ans;
+  } else {
+    return "Make sure that your equation has only  one '=' sign";
+  }
 }
 
-String diff (String eq){
-  return "diffrential equation";
+String diff(String eq) {
+  Parser p = Parser();
+  Expression exp = p.parse(eq);
+  var a = exp.derive('x').simplify();
+  return a.simplify().toString();
 }

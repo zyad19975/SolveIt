@@ -25,39 +25,179 @@ class _DetailScreenState extends State<DetailScreen> {
     FirebaseVisionImage camImage = FirebaseVisionImage.fromFile(temp);
     TextRecognizer recognizeText = FirebaseVision.instance.textRecognizer();
     VisionText readText = await recognizeText.processImage(camImage);
-    print(readText.text);
+    
+    if (widget.todo.type == "Two") {
+      String equationOne = readText.blocks[0].lines[0].text;
+      equationOne = equationOne.toString().toLowerCase();
+      TextEditingController controllerOne;
+      controllerOne = TextEditingController(text: equationOne);
+
+      String equationTwo = readText.blocks[0].lines[1].text;
+      equationTwo = equationTwo.toString().toLowerCase();
+      TextEditingController controllerTwo;
+      controllerTwo = TextEditingController(text: equationTwo);
+
+      showDialog(
+          context: context,
+          child: new AlertDialog(
+            title: Text("Check your equation"),
+            content: Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  TextField(
+                    controller: controllerOne,
+                  ),
+                  TextField(
+                    controller: controllerTwo,
+                  )
+                ],
+              ),
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                color: DesignCourseAppTheme.nearlyBlue,
+                child: new Text(
+                  'Ok',
+                  style: TextStyle(
+                    color: DesignCourseAppTheme.darkerText,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(  
+                        builder: (context) => Solve(
+                            equation: controllerOne.text, todo: widget.todo, second: controllerTwo.text)),
+                  );
+                },
+              )
+            ],
+          ));
+    } else {
+      String equation = readText.text;
+      equation = equation.toString().toLowerCase();
+      TextEditingController controller;
+      controller = TextEditingController(text: equation);
+      showDialog(
+          context: context,
+          child: new AlertDialog(
+            title: Text("Check your equation"),
+            content: TextField(
+              controller: controller,
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                color: DesignCourseAppTheme.nearlyBlue,
+                child: new Text(
+                  'Ok',
+                  style: TextStyle(
+                    color: DesignCourseAppTheme.darkerText,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Solve(
+                            equation: controller.text, todo: widget.todo)),
+                  );
+                },
+              )
+            ],
+          ));
+    }
+
+
   }
 
   Future picgallery() async {
-    String equation = "x+5 = 12";
-    TextEditingController controller;
-    controller = TextEditingController(text: equation);
+    var temp = await ImagePicker.pickImage(source: ImageSource.gallery);
+    FirebaseVisionImage galImage = FirebaseVisionImage.fromFile(temp);
+    TextRecognizer recognizeText = FirebaseVision.instance.textRecognizer();
+    VisionText readText = await recognizeText.processImage(galImage);
 
-    showDialog(
-        context: context,
-        child: new AlertDialog(
-          title: Text("Check your equation"),
-          content: TextField(
-            controller: controller,
-          ),
-          actions: <Widget>[
-            new FlatButton(
-              color: DesignCourseAppTheme.nearlyBlue,
-              child: new Text(
-                'Ok',
-                style: TextStyle(
-                  color: DesignCourseAppTheme.darkerText,
-                ),
+    if (widget.todo.type == "Two") {
+      String equationOne = readText.blocks[0].lines[0].text;
+      equationOne = equationOne.toString().toLowerCase();
+      TextEditingController controllerOne;
+      controllerOne = TextEditingController(text: equationOne);
+
+      String equationTwo = readText.blocks[0].lines[1].text;
+      equationTwo = equationTwo.toString().toLowerCase();
+      TextEditingController controllerTwo;
+      controllerTwo = TextEditingController(text: equationTwo);
+
+      showDialog(
+          context: context,
+          child: new AlertDialog(
+            title: Text("Check your equation"),
+            content: Container(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  TextField(
+                    controller: controllerOne,
+                  ),
+                  TextField(
+                    controller: controllerTwo,
+                  )
+                ],
               ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Solve(equation:controller.text,todo:widget.todo)),
-                );
-              },
-            )
-          ],
-        ));
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                color: DesignCourseAppTheme.nearlyBlue,
+                child: new Text(
+                  'Ok',
+                  style: TextStyle(
+                    color: DesignCourseAppTheme.darkerText,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Solve(
+                            equation: controllerOne.text, todo: widget.todo,second: controllerTwo.text)),
+                  );
+                },
+              )
+            ],
+          ));
+    } else {
+      String equation = readText.text;
+      equation = equation.toString().toLowerCase();
+      TextEditingController controller;
+      controller = TextEditingController(text: equation);
+      showDialog(
+          context: context,
+          child: new AlertDialog(
+            title: Text("Check your equation"),
+            content: TextField(
+              controller: controller,
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                color: DesignCourseAppTheme.nearlyBlue,
+                child: new Text(
+                  'Ok',
+                  style: TextStyle(
+                    color: DesignCourseAppTheme.darkerText,
+                  ),
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => Solve(
+                            equation: controller.text, todo: widget.todo)),
+                  );
+                },
+              )
+            ],
+          ));
+    }
   }
 
   @override
@@ -154,10 +294,11 @@ class _DetailScreenState extends State<DetailScreen> {
                           ],
                         ),
                         child: Center(
-                          child: Icon(
-                            Icons.photo_camera,
+                          child: IconButton(
+                            icon: Icon(Icons.photo_camera),
                             color: DesignCourseAppTheme.nearlyWhite,
-                            size: 24,
+                            iconSize: 24,
+                            onPressed: picCamera,
                           ),
                         ),
                       ),
