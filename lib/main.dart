@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:solveit/widgets/home_page.dart';
 
+//this the main page it just get some system info and set the statusbar
+//then load the home screen page
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

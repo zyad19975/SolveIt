@@ -43,6 +43,7 @@ class _PopularCourseListViewState extends State<EquationListView>
               scrollDirection: Axis.vertical,
               children: List<Widget>.generate(
                 Category.popularCourseList.length,
+                //loop on all the available categories
                 (int index) {
                   final int count = Category.popularCourseList.length;
                   final Animation<double> animation =

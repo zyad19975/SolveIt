@@ -65,6 +65,7 @@ class _DesignCourseHomeScreenState extends State<DesignCourseHomeScreen> {
             ),
           ),
           Flexible(
+            //this is a genaric widget that loop on the categories and create a box for each of them 
             child: EquationListView(),
           )
         ],

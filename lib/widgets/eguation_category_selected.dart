@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:solveit/widgets/solve.dart';
 import 'dart:io';
 
+//Todo means the type of category you want to solve the equation for
 class DetailScreen extends StatefulWidget {
   // Declare a field that holds the Todo.
   final Category todo;
@@ -20,18 +21,29 @@ class DetailScreen extends StatefulWidget {
 class _DetailScreenState extends State<DetailScreen> {
   File pickedimage;
 
+  //capture image form camera
   Future picCamera() async {
+    //wait to get the image from the camera
     var temp = await ImagePicker.pickImage(source: ImageSource.camera);
+    //convert the file into a firebase image file to be able to send it to the server
     FirebaseVisionImage camImage = FirebaseVisionImage.fromFile(temp);
+    //apply text recognation function on the image file
     TextRecognizer recognizeText = FirebaseVision.instance.textRecognizer();
+    //read back the return value of the function from the server side
     VisionText readText = await recognizeText.processImage(camImage);
     
+
+    //all the equation dialog box has one text field except the two equations in two unknowsn
+    //so we check the tybe of equation before create the dialog box
     if (widget.todo.type == "Two") {
+      //take the first line of the text as first equation
       String equationOne = readText.blocks[0].lines[0].text;
-      equationOne = equationOne.toString().toLowerCase();
+      equationOne = equationOne.toString().toLowerCase(); //convert the outpudata to string 
       TextEditingController controllerOne;
       controllerOne = TextEditingController(text: equationOne);
 
+
+      //second line as second equation
       String equationTwo = readText.blocks[0].lines[1].text;
       equationTwo = equationTwo.toString().toLowerCase();
       TextEditingController controllerTwo;
@@ -110,7 +122,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
 
   }
-
+  //use a picture from gallery
   Future picgallery() async {
     var temp = await ImagePicker.pickImage(source: ImageSource.gallery);
     FirebaseVisionImage galImage = FirebaseVisionImage.fromFile(temp);

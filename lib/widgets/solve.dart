@@ -41,6 +41,8 @@ class Solve extends StatelessWidget {
   }
 }
 
+
+//check the equation type before solving it
 String solving(String eq, String eq2, String type) {
   switch (type) {
     case 'Basic':
